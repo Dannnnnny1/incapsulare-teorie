@@ -260,14 +260,8 @@ public class MasinaService {
 
 
         }
-
-
-
+        return null;
     }
-
-
-    //todo:functie de elemente comune in 2 liste
-    public List<Masina> 
 
 
 
