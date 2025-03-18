@@ -253,19 +253,72 @@ public class MasinaService {
     }
 
     //todo:filtru
-    //"
-    public List<Masina>filtru(Filtru filtru){
-        List<Masina>masiniFiltrare=new ArrayList<>();
-        for(int i=0;i<this.masini.size();i++){
+    //todo: functie care returneaza elementele comune din 2 liste
 
-
+    public List<Masina>elementeComune(List<Masina>lista1,List<Masina>lista2){
+        List<Masina>elementeComune=new ArrayList<>();
+        for(int i=0;i<lista1.size();i++){
+            if(lista2.contains(lista1.get(i))){
+                elementeComune.add(lista1.get(i));
+            }
         }
-        return null;
+        return elementeComune;
     }
 
+    public List<Masina>filtruMasina(Filtru filtru) {
+        List<Masina> rezultat = new ArrayList<>(this.masini);
+        boolean filtruAplicat = false;
+        if (filtru.pretMaxim > 0 || filtru.pretMinim > 0) {
+            int minPret = 0;
+            int maxPret = Integer.MAX_VALUE;
 
+            if (filtru.pretMinim > 0) {
+                minPret=filtru.pretMinim;
 
+            }
+            if(filtru.pretMaxim>0){
+                maxPret=filtru.pretMaxim;
+            }
+            rezultat=filtruPret(maxPret,maxPret);
+            filtruAplicat=true;
 
+        }
+        if(filtru.marca!=null&&filtru.marca.isEmpty()) {
+            if (filtruAplicat) {
+                List<Masina> MasiniFiltrareMarca = filtruMarca(filtru.marca);
+                rezultat = elementeComune(rezultat, MasiniFiltrareMarca);
+            } else {
+                rezultat = filtruMarca(filtru.marca);
+                filtruAplicat = true;
+            }
+        }
+        if (filtru.model != null && !filtru.model.isEmpty()) {
+            if (filtruAplicat) {
+                List<Masina> masiniFiltrateModel = filtruModel(filtru.model);
+                rezultat = elementeComune(rezultat, masiniFiltrateModel);
+            } else {
+                rezultat = filtruModel(filtru.model);
+                filtruAplicat = true;
+            }
+        }
+        if (filtru.kmMaxim > 0 || filtru.kmMinim > 0) {
+            int minKm = 0;
+            int maxKm = Integer.MAX_VALUE;
 
+            if (filtru.kmMinim > 0) {
+                minKm = filtru.kmMinim;
+            }
+            if (filtru.kmMaxim > 0) {
+                maxKm = filtru.kmMaxim;
+            }
+            if (filtruAplicat) {
+                List<Masina> masiniFitrateKm = filtruKm(minKm, maxKm);
+                rezultat = elementeComune(rezultat, masiniFitrateKm);
+            } else {
+                rezultat = filtruKm(minKm, maxKm);
+            }
+        }
 
+        return rezultat;
+    }
 }

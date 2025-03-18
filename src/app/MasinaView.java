@@ -65,6 +65,8 @@ public class MasinaView {
                 case 10:
                     afisareCateMasiniUzate();
                     break;
+                case 11:
+                    afisareFiltrare();
                 default:
                     System.out.println("test");
             }
@@ -149,4 +151,51 @@ public class MasinaView {
         int numar=masinaService.cateMasiniUzate();
         System.out.println("Exista "+numar+" masini uzate");
     }
+
+
+    public void afisareFiltrare(){
+        Scanner scanner=new Scanner(System.in);
+        Filtru filtru=new Filtru();
+        String raspuns;
+        System.out.println("Doriti sa aplicati filtru pentru pret?(da/nu)");
+        raspuns=scanner.nextLine();
+        if(raspuns.equals("da")||raspuns.equals("DA")||raspuns.equals("Da")){
+            System.out.println("Introduceti pretul minim ");
+            filtru.pretMinim=Integer.parseInt(scanner.nextLine());
+            System.out.println("Introduceti pretul maxim");
+            filtru.pretMaxim=Integer.parseInt(scanner.nextLine());
+        }
+        System.out.println("Doriti sa aplicati filtru pentru marca? (da/nu)");
+        raspuns = scanner.nextLine();
+        if (raspuns.equals("da") || raspuns.equals("DA") || raspuns.equals("Da")) {
+            System.out.println("Introduceti marca:");
+            filtru.marca = scanner.nextLine();
+        }
+        System.out.println("Doriti sa aplicati filtru pentru model? (da/nu)");
+        raspuns = scanner.nextLine();
+        if (raspuns.equals("da") || raspuns.equals("DA") || raspuns.equals("Da")) {
+            System.out.println("Introduceti modelul:");
+            filtru.model = scanner.nextLine();
+        }
+        System.out.println("Doriti sa aplicati filtru pentru kilometraj? (da/nu)");
+        raspuns = scanner.nextLine();
+        if (raspuns.equals("da") || raspuns.equals("DA") || raspuns.equals("Da")) {
+            System.out.println("Introduceti kilometrajul minim:");
+            filtru.kmMinim = Integer.parseInt(scanner.nextLine());
+            System.out.println("Introduceti kilometrajul maxim:");
+            filtru.kmMaxim = Integer.parseInt(scanner.nextLine());
+        }
+        List<Masina> rezultat = masinaService.filtruMasina(filtru);
+        System.out.println("\n===== Rezultatul filtrarii =====");
+        if (rezultat.size() == 0) {
+            System.out.println("Nu s-au gasit masini care sa respecte toate criteriile.");
+        } else {
+            System.out.println("S-au gasit " + rezultat.size() + " masini:");
+            for (int i=0; i<rezultat.size(); i++) {
+                System.out.println(rezultat.get(i).descriere());
+            }
+        }
+
+    }
 }
+
