@@ -20,6 +20,9 @@ public class MasinaView {
         System.out.println("8->Modificati pretul unei masini in functie de id");
         System.out.println("9->Adaugati o masina noua");
         System.out.println("10->Cate masini uzate");
+        System.out.println("11->Filtrare");
+        System.out.println("12->Stergere");
+        System.out.println("13->Afisarea tuturor masinilor de o anumita marca");
         //todo:meniu de filtrare
 
         //todo:crud
@@ -67,6 +70,10 @@ public class MasinaView {
                     break;
                 case 11:
                     afisareFiltrare();
+                case 12:
+                    afisareStergereMasina();
+                case 13:
+                    afisareDupaMarca();
                 default:
                     System.out.println("test");
             }
@@ -131,21 +138,22 @@ public class MasinaView {
     }
     public void afisareAdaugaMasinaNoua(){
         Scanner scanner=new Scanner(System.in);
-        System.out.println("Introduceti id");
-        int id=scanner.nextInt();
         System.out.println("Introduceti pretul");
         double pret=scanner.nextDouble();
+        scanner.nextLine();
         System.out.println("Marca");
         String marca=scanner.nextLine();
         System.out.println("Modelul");
         String model=scanner.nextLine();
         System.out.println("Nr Km");
         double km=scanner.nextDouble();
+        scanner.nextLine();
         System.out.println("Masina este uzata?");
         boolean uzata=scanner.hasNext();
+        scanner.nextLine();
         System.out.println("Inmatriculare");
         String inmatriculare=scanner.nextLine();
-        masinaService.adaugaMasina(id,pret,marca,model,km,uzata,inmatriculare);
+        masinaService.adaugaMasina(pret,marca,model,km,uzata,inmatriculare);
     }
     public void afisareCateMasiniUzate(){
         int numar=masinaService.cateMasiniUzate();
@@ -196,6 +204,27 @@ public class MasinaView {
             }
         }
 
+    }
+    public void afisareStergereMasina(){
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Introduceti id a carei masina doriti sa o stergeti");
+        int id=scanner.nextInt();
+        boolean sters= masinaService.stergeDupaId(id);
+        if(sters){
+            System.out.println("Masina a fost stearsa cu succes");
+        }
+        else{
+            System.out.println("Masina nu a putut fi stearsa");
+        }
+    }
+    public void afisareDupaMarca(){
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Introduceti marca");
+         String marca=scanner.nextLine();
+         List<Masina>masini=masinaService.arataDupaMarca(marca);
+         for(Masina masina:masini){
+             System.out.println(masina.descriere());
+         }
     }
 }
 

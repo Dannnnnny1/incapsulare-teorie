@@ -157,33 +157,6 @@ public class MasinaService {
     //todo:Modificarea prețului unei mașini
     //todo:Funcție care primește un id și un nou preț, apoi actualizează prețul acelei mașini.
 
-    public void modificaPretul(int id,int pret){
-        for(int i=0;i<this.masini.size();i++){
-            if(this.masini.get(i).id==id){
-                this.masini.get(i).pret=pret;
-                break;
-            }
-        }
-    }
-
-    //todo:functie care adauga o noua masina in lista
-    public Boolean adaugaMasina(int id,double pret,String marca,String model,double km,boolean uzata,String inmatriculare){
-
-       //todo:id functie de generare id
-        //todo: unicitate
-
-
-        Masina masinanoua=new Masina();
-        masinanoua.id=id;
-        masinanoua.pret=pret;
-        masinanoua.marca=marca;
-        masinanoua.model=model;
-        masinanoua.km=km;
-        masinanoua.uzata=uzata;
-        masinanoua.inmatriculare=inmatriculare;
-        this.masini.add(masinanoua);
-        return null;
-    }
 
     //todo:Numărarea mașinilor uzate – Returnează câte mașini uzate sunt în listă.
 
@@ -321,4 +294,71 @@ public class MasinaService {
 
         return rezultat;
     }
+    //todo:CRUD
+
+    //todo:CREATE
+    //todo:functie de generare a id u lui automat
+
+    public void adaugaMasina(double pret,String marca,String model,double km,boolean uzata,String inmatriculare){
+
+        //todo:id functie de generare id
+        //todo: unicitate
+
+
+        Masina masinanoua=new Masina();
+        int id=genereazaIdAutomat();
+        masinanoua.id=id;
+        masinanoua.pret=pret;
+        masinanoua.marca=marca;
+        masinanoua.model=model;
+        masinanoua.km=km;
+        masinanoua.uzata=uzata;
+        masinanoua.inmatriculare=inmatriculare;
+        this.masini.add(masinanoua);
+    }
+
+    public int genereazaIdAutomat(){
+        if(masini.isEmpty()){
+            return 1;
+        }
+        int maxId=0;
+        for(Masina masina:masini){
+            if(masina.id>maxId){
+                maxId=masina.id;
+            }
+        }
+        return maxId+1;
+    }
+    //todo:Delete
+    public boolean stergeDupaId(int id){
+        for(int i=0;i<masini.size();i++){
+            Masina masina=masini.get(i);
+            if(masina.id==id){
+                masini.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+    //todo:update
+    public void modificaPretul(int id,int pret){
+        for(int i=0;i<this.masini.size();i++){
+            if(this.masini.get(i).id==id){
+                this.masini.get(i).pret=pret;
+                break;
+            }
+        }
+    }
+    //todo:read
+    //todo:afiseaza toate masinile de o anumita marca
+    public List arataDupaMarca(String marca){
+        List<Masina>masini=new ArrayList<>();
+        for(int i=0;i<this.masini.size();i++){
+            if(this.masini.get(i).marca.equals(marca)){
+                masini.add(this.masini.get(i));
+            }
+        }
+        return masini;
+    }
+
 }
